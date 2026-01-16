@@ -1,8 +1,10 @@
 const fs = require('fs');
 const path = require('path');
 
-// Port 3005 to avoid conflict
-const API_URL = 'http://localhost:3005/api/upload';
+// Production URL
+const API_URL = 'https://book-photo-cms.eternalism.workers.dev/api/upload';
+// Assuming the same key is used for production as local dev for this exercise
+// If 401, we will need to ask the user for the real prod key.
 const API_KEY = 'test-secret-key-1234';
 
 const images = [
@@ -45,7 +47,7 @@ async function uploadImage(filename) {
             const result = await response.json();
             console.log(`Uploaded ${filename}: Success`);
         } else {
-            console.error(`Uploaded ${filename}: Failed`, response.status);
+            console.error(`Uploaded ${filename}: Failed`, response.status, await response.text());
         }
     } catch (error) {
         console.error(`Uploaded ${filename}: Error`, error.message);
