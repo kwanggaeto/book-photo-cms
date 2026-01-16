@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
         // 1. Auth Check
         const apiKey = req.headers.get('x-api-key');
         const ctx = await getCloudflareContext();
-        const env = ctx.env as { API_KEY: string; BUCKET: R2Bucket; DB: D1Database };
+        const env = ctx.env as { API_KEY: string; BUCKET: R2Bucket; DB: D1Database, ALIVE_DAYS: string };
 
         if (apiKey !== env.API_KEY) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -33,7 +33,8 @@ export async function POST(req: NextRequest) {
         // 3. Prepare Metadata
         const db = await getDb();
         const now = new Date();
-        const expiresAt = new Date(now.getTime() + 3 * 24 * 60 * 60 * 1000); // 3 days
+        const ex = parseInt(env.ALIVE_DAYS ?? '3');
+        const expiresAt = new Date(now.getTime() + ex * 24 * 60 * 60 * 1000);
 
         // Generate 10-character UID
         const uid = generateId(10);

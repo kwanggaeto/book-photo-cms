@@ -10,6 +10,7 @@ declare namespace Cloudflare {
         ASSETS: Fetcher;
         ADMIN_ID: string;
         ADMIN_PW: string;
+        ALIVE_DAYS: string;
     }
 }
 interface CloudflareEnv extends Cloudflare.Env { }
