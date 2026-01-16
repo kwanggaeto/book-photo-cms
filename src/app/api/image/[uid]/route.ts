@@ -15,8 +15,6 @@ export async function GET(
 
         const object = await env.BUCKET.get(uid);
 
-        console.log(`object?.httpMetadata: ${object?.httpMetadata}`);
-
         if (object === null) {
             return new NextResponse('Image not found or expired', { status: 404 });
         }
