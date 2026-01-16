@@ -26,26 +26,12 @@ export async function GET(
             return new NextResponse('Image not found or expired', { status: 404 });
         }
 
-        const bytes = (await object.blob()).stream();
-
-        // 2) Images로 변환 (바인딩 기반)
-        // ⚠️ 실제 transform 옵션 키/형식은 Images 문서에 맞춰 조정해야 해요.
-        const transformed = await env.IMAGES
-            .input(bytes)
-            .transform({
-                width: w ? Number(w) : undefined,
-            })
-            .output({
-                format: "image/jpeg",
-                quality: q ? Number(q) : undefined,
-            });
-
         const headers = new Headers();
         object.writeHttpMetadata(headers);
         headers.set('etag', object.httpEtag);
 
         // Stream the body
-        return new NextResponse(transformed.image(), {
+        return new NextResponse(object.body, {
             headers,
         });
 
