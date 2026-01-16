@@ -14,12 +14,6 @@ export async function GET(
         const ctx = await getCloudflareContext();
         const env = ctx.env as { BUCKET: R2Bucket; DB: D1Database; IMAGES: ImagesBinding };
 
-
-        // 변환 파라미터
-        const w = url.searchParams.get("w");
-        const q = url.searchParams.get("q");
-
-
         const object = await env.BUCKET.get(uid);
 
         if (object === null) {
