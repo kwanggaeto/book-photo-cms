@@ -59,6 +59,8 @@ export async function deletePhoto(uid: string) {
     // Delete from R2
     if (deleted.length > 0) {
         await env.BUCKET.delete(deleted[0].uid);
+        await env.BUCKET.delete(`${deleted[0].uid}_thumb`);
+        await env.BUCKET.delete(`${deleted[0].uid}_mid`);
         return true;
     }
 
