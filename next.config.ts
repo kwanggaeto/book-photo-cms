@@ -1,9 +1,13 @@
 import type { NextConfig } from "next";
 
+// added by create cloudflare to enable calling `getCloudflareContext()` in `next dev`
+import { initOpenNextCloudflareForDev } from "@opennextjs/cloudflare";
+initOpenNextCloudflareForDev();
+
 const nextConfig: NextConfig = {
 	/* config options here */
 	env: {
-		NEXT_PUBLIC_APP_URL: process.env.CF_PAGES_URL || process.env.NEXT_PUBLIC_APP_URL,
+		NEXT_PUBLIC_APP_URL: process.env.CF_PREVIEW_DOMAIN || process.env.NEXT_PUBLIC_APP_URL,
 	},
 	images: {
 		loader: 'custom',
@@ -12,7 +16,3 @@ const nextConfig: NextConfig = {
 };
 
 export default nextConfig;
-
-// added by create cloudflare to enable calling `getCloudflareContext()` in `next dev`
-import { initOpenNextCloudflareForDev } from "@opennextjs/cloudflare";
-initOpenNextCloudflareForDev();
