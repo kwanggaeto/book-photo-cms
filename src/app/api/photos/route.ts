@@ -32,6 +32,8 @@ export async function GET(req: NextRequest) {
             }
         }
 
+        const total = 0;
+        const photos: any = [];
         /* const [total, photos] = await Promise.all([
             prisma.photo.count({ where }),
             prisma.photo.findMany({
