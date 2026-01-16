@@ -13,7 +13,8 @@
 	],
 	"vars": {
 		"ADMIN_ID": "admin",
-		"ALIVE_DAYS": "3"
+		"ALIVE_DAYS": "3",
+		"NEXT_PUBLIC_APP_URL": "http://localhost:3000"
 	},
 	"assets": {
 		"binding": "ASSETS",

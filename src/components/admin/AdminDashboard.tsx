@@ -25,6 +25,7 @@ import { toast } from 'sonner';
 import Image from 'next/image';
 import { fetchPhotosAction, deletePhotoAction } from '@/app/admin/actions';
 import { logoutAction } from '@/app/admin/auth';
+import getBaseUrl from '@/app/getBaseUrl';
 
 interface Photo {
     id: number;
@@ -41,16 +42,19 @@ export default function AdminDashboard() {
     const [page, setPage] = useState(1);
     const [total, setTotal] = useState(0);
     const [loading, setLoading] = useState(false);
+    const [baseUrl, setBaseUrl] = useState('');
 
     const loadPhotos = async () => {
         setLoading(true);
         try {
+            const baseUrl = await getBaseUrl();
+            setBaseUrl(baseUrl);
             const dateStr = date ? format(date, 'yyyy-MM-dd') : undefined;
             const result = await fetchPhotosAction(page, dateStr);
             setPhotos(result.data);
             setTotal(result.pagination?.total || 0);
-        } catch {
-            console.error('Failed to fetch photos');
+        } catch (ex) {
+            console.error(`Failed to fetch photos: ${ex}`);
             toast.error('사진 목록을 불러오지 못했습니다.');
         } finally {
             setLoading(false);
@@ -156,7 +160,7 @@ export default function AdminDashboard() {
                                             <TableRow key={photo.id}>
                                                 <TableCell>
                                                     <Image
-                                                        src={`/api/image/${photo.uid}`}
+                                                        src={`${baseUrl}/api/image/${photo.uid}`}
                                                         alt="thumb"
                                                         className="w-16 h-16 object-cover rounded"
                                                         width={64}

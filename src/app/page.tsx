@@ -1,14 +1,42 @@
+'use client'
+
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Image from 'next/image'
 import { getPhotoByUid } from '@/services/photo';
+import { useEffect, useState } from "react";
+import getBaseUrl from "./getBaseUrl";
 
 interface PageProps {
 	searchParams: Promise<{ uid?: string }>;
 }
 
-export default async function Home({ searchParams }: PageProps) {
-	const { uid } = await searchParams;
+export default function Home({ searchParams }: PageProps) {
+	const [uid, setUid] = useState('');
+	const [baseUrl, setBaseUrl] = useState('');
+	const [photo, setPhoto] = useState<{
+		id: number;
+		uid: string;
+		filename: string;
+		createdAt: Date;
+		expiresAt: Date;
+		size: number;
+		mimeType: string;
+	} | null>(null);
+
+
+	const loadPhoto = async () => {
+		const param = await searchParams;
+		setUid(param.uid || '');
+		const photo = await getPhotoByUid(param.uid || '');
+		setPhoto(photo);
+		const baseUrl = await getBaseUrl();
+		setBaseUrl(baseUrl);
+	}
+	useEffect(() => {
+		loadPhoto();
+	}, []);
+
 
 	if (!uid) {
 		return (
@@ -30,9 +58,6 @@ export default async function Home({ searchParams }: PageProps) {
 		);
 	}
 
-	// Fetch photo metadata
-	const photo = await getPhotoByUid(uid);
-
 	if (!photo) {
 		return (
 			<div className="flex items-center justify-center min-h-screen bg-slate-50">
@@ -48,7 +73,7 @@ export default async function Home({ searchParams }: PageProps) {
 		);
 	}
 
-	const imageUrl = `/api/image/${uid}`;
+	const imageUrl = `${baseUrl}/api/image/${uid}`;
 
 	return (
 		<div className="flex flex-col items-center justify-center min-h-screen bg-slate-100 p-4">

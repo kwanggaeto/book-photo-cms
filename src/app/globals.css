@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@import url('http://fonts.googleapis.com/earlyaccess/nanumgothic.css');
+
 @plugin "tailwindcss-animate";
 
 @custom-variant dark (&:where(.dark, .dark *));
@@ -151,7 +153,6 @@
 
 @layer base {
 
-  @import url('http://fonts.googleapis.com/earlyaccess/nanumgothic.css');
 
   * {
     @apply border-border;
