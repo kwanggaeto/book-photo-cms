@@ -52,20 +52,21 @@ export default async function Home({ searchParams }: PageProps) {
 
 	return (
 		<div className="flex flex-col items-center justify-center min-h-screen bg-slate-100 p-4">
-			<Card className="w-full max-w-xl shadow-xl overflow-hidden">
+			<Card className="flex flex-col w-full lg:max-w-sm md:max-w-md md:aspect-[3/6] sm:aspect-[2/5] shadow-xl overflow-hidden">
 				<CardHeader className="bg-white">
 					<CardTitle><p className="text-3xl">책박물관 포토부스</p></CardTitle>
 					<CardDescription>
 						expires on {new Date(photo.expiresAt).toLocaleString()}
 					</CardDescription>
 				</CardHeader>
-				<CardContent className="relative w-full h-[60vh] min-h-[300px] p-0">
+				<CardContent className="grow p-0">
 					<Image
+						className="w-full h-full"
 						src={imageUrl}
 						alt="View"
-						fill
-						className="object-contain"
-						unoptimized
+						width={400}
+						height={500}
+						objectFit="contain"
 						priority
 					/>
 				</CardContent>
