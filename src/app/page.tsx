@@ -1,5 +1,6 @@
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import Image from 'next/image'
 
 interface PageProps {
 	searchParams: Promise<{ uid?: string }>;
@@ -41,7 +42,7 @@ export default async function Home({ searchParams }: PageProps) {
 				</CardHeader>
 				<CardContent className="p-0 bg-black flex justify-center items-center min-h-[300px]">
 					{/* eslint-disable-next-line @next/next/no-img-element */}
-					<img
+					<Image
 						src={imageUrl}
 						alt="View"
 						className="max-w-full max-h-[80vh] object-contain"
