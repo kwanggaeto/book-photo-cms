@@ -1,6 +1,7 @@
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Image from 'next/image'
+import { getPhotoByUid } from '@/services/photo';
 
 interface PageProps {
 	searchParams: Promise<{ uid?: string }>;
@@ -29,15 +30,33 @@ export default async function Home({ searchParams }: PageProps) {
 		);
 	}
 
+	// Fetch photo metadata
+	const photo = await getPhotoByUid(uid);
+
+	if (!photo) {
+		return (
+			<div className="flex items-center justify-center min-h-screen bg-slate-50">
+				<Card className="w-[350px] shadow-lg">
+					<CardHeader>
+						<CardTitle>Photo Not Found</CardTitle>
+						<CardDescription>
+							사진을 찾을 수 없거나 만료되었습니다.
+						</CardDescription>
+					</CardHeader>
+				</Card>
+			</div>
+		);
+	}
+
 	const imageUrl = `/api/image/${uid}`;
 
 	return (
 		<div className="flex flex-col items-center justify-center min-h-screen bg-slate-100 p-4">
-			<Card className="w-full max-w-2xl shadow-xl overflow-hidden">
+			<Card className="w-full max-w-xl shadow-xl overflow-hidden">
 				<CardHeader className="bg-white">
-					<CardTitle>사진 조회</CardTitle>
+					<CardTitle>Fairytale Photobooth</CardTitle>
 					<CardDescription>
-						3일간 유효한 사진입니다.
+						expires on {new Date(photo.expiresAt).toLocaleString()}
 					</CardDescription>
 				</CardHeader>
 				<CardContent className="relative w-full h-[60vh] min-h-[300px] p-0">
@@ -50,9 +69,8 @@ export default async function Home({ searchParams }: PageProps) {
 						priority
 					/>
 				</CardContent>
-				<CardFooter className="flex justify-between p-4 bg-white">
-					<p className="text-xs text-slate-400">UID: {uid}</p>
-					<Button variant="outline" asChild>
+				<CardFooter className="flex justify-center p-4 bg-white">
+					<Button className="w-full" variant="default" size="lg">
 						<a href={imageUrl} download={`photo-${uid}.jpg`}>다운로드</a>
 					</Button>
 				</CardFooter>

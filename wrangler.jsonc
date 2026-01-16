@@ -32,6 +32,9 @@
 			"binding": "BUCKET"
 		}
 	],
+	"images": {
+		"binding": "IMAGES"
+	},
 	"triggers": {
 		"crons": [
 			"0 0 * * *"

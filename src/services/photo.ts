@@ -62,3 +62,9 @@ export async function deletePhoto(uid: string) {
 
     return false;
 }
+
+export async function getPhotoByUid(uid: string) {
+    const db = await getDb();
+    const result = await db.select().from(photos).where(eq(photos.uid, uid)).limit(1);
+    return result[0] || null;
+}
