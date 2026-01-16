@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import Image from 'next/image'
 import { getPhotoByUid } from '@/services/photo';
 import { useEffect, useState } from "react";
-import getBaseUrl from "./getBaseUrl";
 
 interface PageProps {
 	searchParams: Promise<{ uid?: string }>;
@@ -13,7 +12,6 @@ interface PageProps {
 
 export default function Home({ searchParams }: PageProps) {
 	const [uid, setUid] = useState('');
-	const [baseUrl, setBaseUrl] = useState('');
 	const [photo, setPhoto] = useState<{
 		id: number;
 		uid: string;
@@ -30,8 +28,6 @@ export default function Home({ searchParams }: PageProps) {
 		setUid(param.uid || '');
 		const photo = await getPhotoByUid(param.uid || '');
 		setPhoto(photo);
-		const baseUrl = await getBaseUrl();
-		setBaseUrl(baseUrl);
 	}
 	useEffect(() => {
 		loadPhoto();
@@ -73,7 +69,7 @@ export default function Home({ searchParams }: PageProps) {
 		);
 	}
 
-	const imageUrl = `${baseUrl}/api/image/${uid}`;
+	const imageUrl = `/api/image/${uid}_mid`;
 
 	return (
 		<div className="flex flex-col items-center justify-center min-h-screen bg-slate-100 p-4">

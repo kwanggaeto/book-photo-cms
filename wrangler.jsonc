@@ -13,8 +13,7 @@
 	],
 	"vars": {
 		"ADMIN_ID": "admin",
-		"ALIVE_DAYS": "3",
-		"BASE_URL": "book-photo-cms.eternalism.workers.dev"
+		"ALIVE_DAYS": "3"
 	},
 	"assets": {
 		"binding": "ASSETS",

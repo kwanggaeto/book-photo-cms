@@ -25,7 +25,6 @@ import { toast } from 'sonner';
 import Image from 'next/image';
 import { fetchPhotosAction, deletePhotoAction } from '@/app/admin/actions';
 import { logoutAction } from '@/app/admin/auth';
-import getBaseUrl from '@/app/getBaseUrl';
 
 interface Photo {
     id: number;
@@ -42,13 +41,10 @@ export default function AdminDashboard() {
     const [page, setPage] = useState(1);
     const [total, setTotal] = useState(0);
     const [loading, setLoading] = useState(false);
-    const [baseUrl, setBaseUrl] = useState('');
 
     const loadPhotos = async () => {
         setLoading(true);
         try {
-            const baseUrl = await getBaseUrl();
-            setBaseUrl(baseUrl);
             const dateStr = date ? format(date, 'yyyy-MM-dd') : undefined;
             const result = await fetchPhotosAction(page, dateStr);
             setPhotos(result.data);
@@ -160,12 +156,13 @@ export default function AdminDashboard() {
                                             <TableRow key={photo.id}>
                                                 <TableCell>
                                                     <Image
-                                                        src={`${baseUrl}/api/image/${photo.uid}`}
+                                                        src={`/api/image/${photo.uid}_thumb`}
                                                         alt="thumb"
                                                         className="w-16 h-16 object-cover rounded"
                                                         width={64}
                                                         height={64}
                                                         loading='lazy'
+                                                        unoptimized
                                                     />
                                                 </TableCell>
                                                 <TableCell className="font-medium truncate max-w-[200px]">{photo.filename}</TableCell>

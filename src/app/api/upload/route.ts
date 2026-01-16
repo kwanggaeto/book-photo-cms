@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
         // 1. Auth Check
         const apiKey = req.headers.get('x-api-key');
         const ctx = await getCloudflareContext();
-        const env = ctx.env as { API_KEY: string; BUCKET: R2Bucket; DB: D1Database, ALIVE_DAYS: string };
+        const env = ctx.env as { API_KEY: string; BUCKET: R2Bucket; DB: D1Database, IMAGES: ImagesBinding, ALIVE_DAYS: string };
 
         if (apiKey !== env.API_KEY) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -46,19 +46,42 @@ export async function POST(req: NextRequest) {
             size: file.size,
             mimeType: file.type,
             expiresAt: expiresAt,
-            // createdAt is default now()
+            // createdAt is default now()`
         }).returning();
 
         const objectKey = `${newPhoto[0].uid}`;
 
         // 5. Upload to R2
         const arrayBuffer = await file.arrayBuffer();
+
         await env.BUCKET.put(objectKey, arrayBuffer, {
             httpMetadata: {
                 contentType: file.type,
             },
             customMetadata: {
                 originalName: file.name,
+                uploadedAt: now.toISOString(),
+            }
+        });
+
+        const thumb = await env.IMAGES.input(file.stream()).transform({ width: 128, fit: 'contain' }).output({ anim: false, quality: 50, format: 'image/jpeg' });
+        await env.BUCKET.put(`${objectKey}_thumb`, thumb.image(), {
+            httpMetadata: {
+                contentType: 'image/jpeg',
+            },
+            customMetadata: {
+                originalName: `thumb_${file.name}`,
+                uploadedAt: now.toISOString(),
+            }
+        });
+
+        const mid = await env.IMAGES.input(file.stream()).transform({ width: 512, fit: 'contain' }).output({ anim: false, quality: 75, format: 'image/jpeg' });
+        await env.BUCKET.put(`${objectKey}_mid`, mid.image(), {
+            httpMetadata: {
+                contentType: 'image/jpeg',
+            },
+            customMetadata: {
+                originalName: `mid_${file.name}`,
                 uploadedAt: now.toISOString(),
             }
         });

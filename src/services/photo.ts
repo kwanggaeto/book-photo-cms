@@ -1,3 +1,5 @@
+'use server'
+
 import { getDb } from '@/lib/db';
 import { photos } from '@/db/schema';
 import { count, desc, eq, and, gte, lt } from 'drizzle-orm';
