@@ -165,7 +165,9 @@ export default function AdminDashboard() {
                                                     />
                                                 </TableCell>
                                                 <TableCell className="font-medium truncate max-w-[200px]">{photo.filename}</TableCell>
-                                                <TableCell className="font-mono text-xs">{photo.uid}</TableCell>
+                                                <TableCell className="font-mono text-xs">
+                                                    <a href={`/?uid=${photo.uid}`} target="_blank" rel="noopener noreferrer">{photo.uid}</a>
+                                                </TableCell>
                                                 <TableCell>{new Date(photo.createdAt).toLocaleString()}</TableCell>
                                                 <TableCell className={cn(
                                                     new Date(photo.expiresAt) < new Date() ? "text-red-500 font-bold" : ""
