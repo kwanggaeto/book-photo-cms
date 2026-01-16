@@ -7,7 +7,10 @@
 	"name": "book-photo-cms",
 	"main": ".open-next/worker.js",
 	"compatibility_date": "2025-10-08",
-	"compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+	"compatibility_flags": [
+		"nodejs_compat",
+		"global_fetch_strictly_public"
+	],
 	"assets": {
 		"binding": "ASSETS",
 		"directory": ".open-next/assets"
@@ -15,5 +18,23 @@
 	"observability": {
 		"enabled": true
 	},
-	"upload_source_maps": true
+	"upload_source_maps": true,
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "book-photo-db",
+			"database_id": "a2fce851-c971-40b1-bc71-5ec311eb0065"
+		}
+	],
+	"r2_buckets": [
+		{
+			"bucket_name": "book-photo-storage",
+			"binding": "BUCKET"
+		}
+	],
+	"triggers": {
+		"crons": [
+			"0 0 * * *"
+		]
+	}
 }

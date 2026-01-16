@@ -1,0 +1,21 @@
+Using vars defined in .dev.vars
+   ▲ Next.js 16.0.7 (Turbopack)
+   - Environments: .env
+
+   Creating an optimized production build ...
+Using vars defined in .dev.vars
+ ✓ Compiled successfully in 1840.6ms
+   Running TypeScript ...
+Failed to compile.
+
+./src/app/admin/page.tsx:53:23
+Type error: 'json' is of type 'unknown'.
+
+[0m [90m 51 |[39m             [36mif[39m ([33m![39mres[33m.[39mok) [36mthrow[39m [36mnew[39m [33mError[39m([32m'Failed to fetch'[39m)[33m;[39m
+ [90m 52 |[39m             [36mconst[39m json [33m=[39m [36mawait[39m res[33m.[39mjson()[33m;[39m
+[31m[1m>[22m[39m[90m 53 |[39m             setPhotos(json[33m.[39mdata)[33m;[39m
+ [90m    |[39m                       [31m[1m^[22m[39m
+ [90m 54 |[39m             setTotal(json[33m.[39mpagination[33m?[39m[33m.[39mtotal [33m||[39m [35m0[39m)[33m;[39m
+ [90m 55 |[39m         } [36mcatch[39m (err) {
+ [90m 56 |[39m             console[33m.[39merror(err)[33m;[39m[0m
+Next.js build worker exited with code: 1 and signal: null

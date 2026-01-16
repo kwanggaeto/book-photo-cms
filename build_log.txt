@@ -1,0 +1,112 @@
+Using vars defined in .dev.vars
+   ▲ Next.js 16.0.7 (Turbopack)
+   - Environments: .env
+
+   Creating an optimized production build ...
+Using vars defined in .dev.vars
+Error: Can't resolve 'tailwindcss-animate' in 'D:\Kwangkee_Works\Projects\2025_12_책박물관\book-photo-cms\src\app'
+    [2m[at finishWithoutResolve (D:\Kwangkee_Works\Projects\2025_12_책박물관\book-photo-cms\node_modules\enhanced-resolve\lib\Resolver.js:565:18)][0m
+    [2m[at D:\Kwangkee_Works\Projects\2025_12_책박물관\book-photo-cms\node_modules\enhanced-resolve\lib\Resolver.js:657:14][0m
+    [2m[at D:\Kwangkee_Works\Projects\2025_12_책박물관\book-photo-cms\node_modules\enhanced-resolve\lib\Resolver.js:718:5][0m
+    [2m[at eval (eval at create (D:\Kwangkee_Works\Projects\2025_12_책박물관\book-photo-cms\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at D:\Kwangkee_Works\Projects\2025_12_책박물관\book-photo-cms\node_modules\enhanced-resolve\lib\Resolver.js:718:5][0m
+    [2m[at eval (eval at create (D:\Kwangkee_Works\Projects\2025_12_책박물관\book-photo-cms\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:27:1)][0m
+    [2m[at D:\Kwangkee_Works\Projects\2025_12_책박물관\book-photo-cms\node_modules\enhanced-resolve\lib\DescriptionFilePlugin.js:89:43][0m
+    [2m[at D:\Kwangkee_Works\Projects\2025_12_책박물관\book-photo-cms\node_modules\enhanced-resolve\lib\Resolver.js:718:5][0m
+    [2m[at eval (eval at create (D:\Kwangkee_Works\Projects\2025_12_책박물관\book-photo-cms\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at D:\Kwangkee_Works\Projects\2025_12_책박물관\book-photo-cms\node_modules\enhanced-resolve\lib\Resolver.js:718:5][0m {
+  details: "resolve 'tailwindcss-animate' in 'D:\\Kwangkee_Works\\Projects\\2025_12_책박물관\\book-photo-cms\\src\\app'\n" +
+    '  Parsed request is a module\n' +
+    '  using description file: D:\\Kwangkee_Works\\Projects\\2025_12_책박물관\\book-photo-cms\\package.json (relative path: ./src/app)\n' +
+    '    resolve as module\n' +
+    "      D:\\Kwangkee_Works\\Projects\\2025_12_책박물관\\book-photo-cms\\src\\app\\node_modules doesn't exist or is not a directory\n" +
+    "      D:\\Kwangkee_Works\\Projects\\2025_12_책박물관\\book-photo-cms\\src\\node_modules doesn't exist or is not a directory\n" +
+    '      looking for modules in D:\\Kwangkee_Works\\Projects\\2025_12_책박물관\\book-photo-cms\\node_modules\n' +
+    '        single file module\n' +
+    '          using description file: D:\\Kwangkee_Works\\Projects\\2025_12_책박물관\\book-photo-cms\\package.json (relative path: ./node_modules/tailwindcss-animate)\n' +
+    '            no extension\n' +
+    "              D:\\Kwangkee_Works\\Projects\\2025_12_책박물관\\book-photo-cms\\node_modules\\tailwindcss-animate doesn't exist\n" +
+    '            .js\n' +
+    "              D:\\Kwangkee_Works\\Projects\\2025_12_책박물관\\book-photo-cms\\node_modules\\tailwindcss-animate.js doesn't exist\n" +
+    '            .json\n' +
+    "              D:\\Kwangkee_Works\\Projects\\2025_12_책박물관\\book-photo-cms\\node_modules\\tailwindcss-animate.json doesn't exist\n" +
+    '            .node\n' +
+    "              D:\\Kwangkee_Works\\Projects\\2025_12_책박물관\\book-photo-cms\\node_modules\\tailwindcss-animate.node doesn't exist\n" +
+    '            .ts\n' +
+    "              D:\\Kwangkee_Works\\Projects\\2025_12_책박물관\\book-photo-cms\\node_modules\\tailwindcss-animate.ts doesn't exist\n" +
+    "        D:\\Kwangkee_Works\\Projects\\2025_12_책박물관\\book-photo-cms\\node_modules\\tailwindcss-animate doesn't exist\n" +
+    "      D:\\Kwangkee_Works\\Projects\\2025_12_책박물관\\node_modules doesn't exist or is not a directory\n" +
+    "      D:\\Kwangkee_Works\\Projects\\node_modules doesn't exist or is not a directory\n" +
+    "      D:\\Kwangkee_Works\\node_modules doesn't exist or is not a directory\n" +
+    "      D:\\node_modules doesn't exist or is not a directory"
+}
+
+> Build error occurred
+Error: Turbopack build failed with 3 errors:
+./src/app/globals.css
+Error evaluating Node.js code
+CssSyntaxError: tailwindcss: D:\Kwangkee_Works\Projects\2025_12_책박물관\book-photo-cms\src\app\globals.css:1:1: Can't resolve 'tailwindcss-animate' in 'D:\Kwangkee_Works\Projects\2025_12_책박물관\book-photo-cms\src\app'
+    at Input.error (node_modules/postcss/lib/input.js:135:16) [D:\Kwangkee_Works\Projects\2025_12_책박물관\book-photo-cms\.next\build\chunks\node_modules_fe693df6._.js:4651:22]
+    at Root.error (node_modules/postcss/lib/node.js:146:32) [D:\Kwangkee_Works\Projects\2025_12_책박물관\book-photo-cms\.next\build\chunks\node_modules_fe693df6._.js:928:38]
+    [at Object.Once (D:\Kwangkee_Works\Projects\2025_12_책박물관\book-photo-cms\node_modules\@tailwindcss\postcss\dist\index.js:10:6912)]
+    at async LazyResult.runAsync (node_modules/postcss/lib/lazy-result.js:293:11) [D:\Kwangkee_Works\Projects\2025_12_책박물관\book-photo-cms\.next\build\chunks\node_modules_fe693df6._.js:6206:21]
+    at async transform (turbopack:///[turbopack-node]/transforms/postcss.ts:70:34) [D:\Kwangkee_Works\Projects\2025_12_책박물관\book-photo-cms\.next\build\chunks\[root-of-the-server]__51225daf._.js:146:36]
+    at async run (turbopack:///[turbopack-node]/ipc/evaluate.ts:92:23) [D:\Kwangkee_Works\Projects\2025_12_책박물관\book-photo-cms\.next\build\chunks\[root-of-the-server]__974941ed._.js:443:31]
+
+Import trace:
+  Client Component Browser:
+    ./src/app/globals.css [Client Component Browser]
+    ./src/app/layout.tsx [Server Component]
+
+
+./src/components/ui/button.tsx:3:1
+Module not found: Can't resolve 'class-variance-authority'
+[0m [90m 1 |[39m [36mimport[39m [33m*[39m [36mas[39m [33mReact[39m [36mfrom[39m [32m"react"[39m
+ [90m 2 |[39m [36mimport[39m { [33mSlot[39m } [36mfrom[39m [32m"@radix-ui/react-slot"[39m
+[31m[1m>[22m[39m[90m 3 |[39m [36mimport[39m { cva[33m,[39m type [33mVariantProps[39m } [36mfrom[39m [32m"class-variance-authority"[39m
+ [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 4 |[39m
+ [90m 5 |[39m [36mimport[39m { cn } [36mfrom[39m [32m"@/lib/utils"[39m
+ [90m 6 |[39m[0m
+
+
+
+Import traces:
+  Server Component:
+    ./src/components/ui/button.tsx
+    ./src/app/page.tsx
+
+  Client Component Browser:
+    ./src/components/ui/button.tsx [Client Component Browser]
+    ./src/app/admin/page.tsx [Client Component Browser]
+    ./src/app/admin/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/ui/button.tsx [Client Component SSR]
+    ./src/app/admin/page.tsx [Client Component SSR]
+    ./src/app/admin/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./tailwind.config.ts:61:15
+Module not found: Can't resolve 'tailwindcss-animate'
+[0m [90m 59 |[39m         }
+ [90m 60 |[39m     }[33m,[39m
+[31m[1m>[22m[39m[90m 61 |[39m     plugins[33m:[39m [require([32m"tailwindcss-animate"[39m)][33m,[39m
+ [90m    |[39m               [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 62 |[39m }[33m;[39m
+ [90m 63 |[39m [36mexport[39m [36mdefault[39m config[33m;[39m
+ [90m 64 |[39m[0m
+
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+    at async transform (turbopack:///[turbopack-node]/transforms/postcss.ts:70:34) [D:\Kwangkee_Works\Projects\2025_12_책박물관\book-photo-cms\.next\build\chunks\[root-of-the-server]__51225daf._.js:146:36])
+    at async run (turbopack:///[turbopack-node]/ipc/evaluate.ts:92:23) [D:\Kwangkee_Works\Projects\2025_12_책박물관\book-photo-cms\.next\build\chunks\[root-of-the-server]__974941ed._.js:443:31])
+    at <unknown> (./src/components/ui/button.tsx:3:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./tailwind.config.ts:61:15)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
