@@ -7,7 +7,6 @@ export async function GET(
     req: NextRequest,
     { params }: { params: Promise<{ uid: string }> }
 ) {
-    const url = new URL(req.url);
     const { uid } = await params;
 
     try {
@@ -21,8 +20,13 @@ export async function GET(
         }
 
         const headers = new Headers();
-        object.writeHttpMetadata(headers);
-        headers.set('etag', object.httpEtag);
+        if (!headers.get("content-type")) {
+            headers.set("content-type", "application/octet-stream");
+        }
+
+        // ✅ 캐시(원본은 장기 캐시 OK, uid가 불변 key라는 전제)
+        headers.set("cache-control", "public, max-age=31536000, immutable");
+        headers.set("etag", object.httpEtag);
 
         // Stream the body
         return new NextResponse(object.body, {
