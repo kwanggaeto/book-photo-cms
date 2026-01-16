@@ -12,7 +12,7 @@ datasource db {
 
 model Photo {
   id        Int      @id @default(autoincrement())
-  uid       String   @unique @default(uuid())
+  uid       String   @unique
   filename  String
   createdAt DateTime @default(now())
   expiresAt DateTime
