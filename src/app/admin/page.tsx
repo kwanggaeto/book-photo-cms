@@ -49,11 +49,11 @@ export default function AdminPage() {
 
             const res = await fetch(`/api/photos?${params.toString()}`);
             if (!res.ok) throw new Error('Failed to fetch');
-            const json = (await res.json()) as { data: Photo[], pagination: any };
+            const json = (await res.json()) as { data: Photo[], pagination: { total: number } };
             setPhotos(json.data);
             setTotal(json.pagination?.total || 0);
-        } catch (err) {
-            console.error(err);
+        } catch {
+            console.error('Failed to fetch photos');
             toast.error('사진 목록을 불러오지 못했습니다.');
         } finally {
             setLoading(false);
@@ -88,7 +88,7 @@ export default function AdminPage() {
 
             toast.success('삭제되었습니다.');
             fetchPhotos();
-        } catch (err) {
+        } catch {
             toast.error('삭제 실패');
         }
     };

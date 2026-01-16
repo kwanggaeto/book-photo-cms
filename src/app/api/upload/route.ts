@@ -1,9 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getPrisma } from '@/lib/prisma';
+import { getDb } from '@/lib/db';
+import { photos } from '@/db/schema';
 import { getCloudflareContext } from '@opennextjs/cloudflare';
 
-// This is an Edge Runtime API (OpenNext/Cloudflare)
-export const runtime = 'edge';
 
 function generateId(length: number = 10) {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
@@ -32,26 +31,26 @@ export async function POST(req: NextRequest) {
         }
 
         // 3. Prepare Metadata
-        const prisma = getPrisma(env.DB);
+        const db = await getDb();
         const now = new Date();
         const expiresAt = new Date(now.getTime() + 3 * 24 * 60 * 60 * 1000); // 3 days
 
         // Generate 10-character UID
         const uid = generateId(10);
 
-        const record = await prisma.photo.create({
-            data: {
-                uid: uid,
-                filename: file.name,
-                size: file.size,
-                mimeType: file.type,
-                expiresAt: expiresAt,
-            }
-        });
+        // 4. Save to D1 via Drizzle
+        const newPhoto = await db.insert(photos).values({
+            uid: uid,
+            filename: file.name,
+            size: file.size,
+            mimeType: file.type,
+            expiresAt: expiresAt,
+            // createdAt is default now()
+        }).returning();
 
-        const objectKey = `${record.uid}`;
+        const objectKey = `${newPhoto[0].uid}`;
 
-        // 4. Upload to R2
+        // 5. Upload to R2
         const arrayBuffer = await file.arrayBuffer();
         await env.BUCKET.put(objectKey, arrayBuffer, {
             httpMetadata: {
@@ -65,7 +64,7 @@ export async function POST(req: NextRequest) {
 
         return NextResponse.json({
             success: true,
-            data: record
+            data: newPhoto[0]
         });
 
     } catch (error) {

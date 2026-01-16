@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getPrisma } from '@/lib/prisma';
+import { getDb } from '@/lib/db';
+import { photos } from '@/db/schema';
+import { count, desc, eq, and, gte, lt } from 'drizzle-orm';
 import { getCloudflareContext } from '@opennextjs/cloudflare';
 
-export const runtime = 'edge';
+
 
 export async function GET(req: NextRequest) {
     try {
@@ -10,14 +12,12 @@ export async function GET(req: NextRequest) {
         const page = parseInt(searchParams.get('page') || '1');
         const date = searchParams.get('date'); // YYYY-MM-DD
         const limit = 20;
-        const skip = (page - 1) * limit;
+        const offset = (page - 1) * limit;
 
-        /* const ctx = await getCloudflareContext();
-        const env = ctx.env as { DB: D1Database };
-        const prisma = getPrisma(env.DB);
+        const db = await getDb();
 
         // Build filter
-        const where: any = {};
+        let whereClause = undefined;
         if (date) {
             // Filter by createdAt date range
             const startDate = new Date(date);
@@ -25,27 +25,27 @@ export async function GET(req: NextRequest) {
             endDate.setDate(endDate.getDate() + 1);
 
             if (!isNaN(startDate.getTime())) {
-                where.createdAt = {
-                    gte: startDate,
-                    lt: endDate
-                };
+                whereClause = and(
+                    gte(photos.createdAt, startDate),
+                    lt(photos.createdAt, endDate)
+                );
             }
-        } */
+        }
 
-        const total = 0;
-        const photos: any = [];
-        /* const [total, photos] = await Promise.all([
-            prisma.photo.count({ where }),
-            prisma.photo.findMany({
-                where,
-                take: limit,
-                skip,
-                orderBy: { createdAt: 'desc' }
-            })
-        ]); */
+        const [totalResult, photosResult] = await Promise.all([
+            db.select({ count: count() }).from(photos).where(whereClause),
+            db.select()
+                .from(photos)
+                .where(whereClause)
+                .limit(limit)
+                .offset(offset)
+                .orderBy(desc(photos.createdAt))
+        ]);
+
+        const total = totalResult[0]?.count || 0;
 
         return NextResponse.json({
-            data: photos,
+            data: photosResult,
             pagination: {
                 page,
                 total,
@@ -76,16 +76,16 @@ export async function DELETE(req: NextRequest) {
             return NextResponse.json({ error: 'UID required' }, { status: 400 });
         }
 
-        const prisma = getPrisma(env.DB);
+        const db = await getDb();
 
         // Delete from D1
-        const photo = await prisma.photo.delete({
-            where: { uid }
-        });
+        const deleted = await db.delete(photos)
+            .where(eq(photos.uid, uid))
+            .returning();
 
         // Delete from R2
-        if (photo) {
-            await env.BUCKET.delete(photo.uid);
+        if (deleted.length > 0) {
+            await env.BUCKET.delete(deleted[0].uid);
         }
 
         return NextResponse.json({ success: true });
