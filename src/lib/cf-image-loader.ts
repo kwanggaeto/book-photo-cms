@@ -1,8 +1,7 @@
 // cf-image-loader.ts
 import { ImageLoaderProps } from 'next/image';
-import { getCloudflareContext } from '@opennextjs/cloudflare';
 
-export default async function cloudflareLoader({ src, width, quality }: ImageLoaderProps): Promise<string> {
+export default function cloudflareLoader({ src, width, quality }: ImageLoaderProps): string {
     // Cloudflare Image Resizing 옵션들
     const params = [
         `width=${width}`,
@@ -10,8 +9,6 @@ export default async function cloudflareLoader({ src, width, quality }: ImageLoa
         'format=auto', // 브라우저가 지원하면 WebP/AVIF로 자동 변환
         'fit=scale-down', // 원본보다 커지지 않게 방지 (화질 저하 방지)
     ];
-    const ctx = await getCloudflareContext();
-    const env = ctx.env as { URL: string };
 
     const paramsString = params.join(',');
 
@@ -25,5 +22,5 @@ export default async function cloudflareLoader({ src, width, quality }: ImageLoa
     const cleanSrc = src.startsWith('/') ? src.slice(1) : src;
 
     // Cloudflare Resizing URL 반환
-    return `/cdn-cgi/image/${paramsString}/${env.URL}/${cleanSrc}`;
+    return `/cdn-cgi/image/${paramsString}/${process.env.NEXT_PUBLIC_APP_URL}/${cleanSrc}`;
 }
