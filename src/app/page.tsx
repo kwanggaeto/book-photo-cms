@@ -40,7 +40,7 @@ export default async function Home({ searchParams }: PageProps) {
 						3일간 유효한 사진입니다.
 					</CardDescription>
 				</CardHeader>
-				<CardContent className="relative w-full h-[60vh] min-h-[300px] bg-black p-0">
+				<CardContent className="relative w-full h-[60vh] min-h-[300px] p-0">
 					<Image
 						src={imageUrl}
 						alt="View"
