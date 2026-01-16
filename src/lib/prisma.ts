@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from '@prisma/client/edge'
 import { PrismaD1 } from '@prisma/adapter-d1'
 
 // Define the interface for Cloudflare Env if not already global
