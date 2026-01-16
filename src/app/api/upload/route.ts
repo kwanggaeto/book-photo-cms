@@ -64,7 +64,7 @@ export async function POST(req: NextRequest) {
             }
         });
 
-        const thumb = await env.IMAGES.input(file.stream()).transform({ width: 128, fit: 'contain' }).output({ anim: false, quality: 50, format: 'image/jpeg' });
+        const thumb = await env.IMAGES.input(file.stream()).transform({ width: 64, fit: 'contain' }).output({ anim: false, quality: 50, format: 'image/jpeg' });
         await env.BUCKET.put(`${objectKey}_thumb`, thumb.image(), {
             httpMetadata: {
                 contentType: 'image/jpeg',
