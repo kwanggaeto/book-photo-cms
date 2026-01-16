@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
         const limit = 20;
         const skip = (page - 1) * limit;
 
-        const ctx = await getCloudflareContext();
+        /* const ctx = await getCloudflareContext();
         const env = ctx.env as { DB: D1Database };
         const prisma = getPrisma(env.DB);
 
@@ -30,7 +30,7 @@ export async function GET(req: NextRequest) {
                     lt: endDate
                 };
             }
-        }
+        } */
 
         const total = 0;
         const photos: any = [];
