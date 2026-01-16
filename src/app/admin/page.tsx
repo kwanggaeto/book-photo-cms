@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { format } from 'date-fns';
-import { Calendar as CalendarIcon, Trash2 } from 'lucide-react';
+import { Calendar as CalendarIcon, Trash2, RefreshCcw } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
@@ -21,6 +21,8 @@ import {
 } from '@/components/ui/table';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from 'sonner';
+import Image from 'next/image';
+import { fetchPhotosAction, deletePhotoAction } from './actions';
 
 interface Photo {
     id: number;
@@ -38,20 +40,13 @@ export default function AdminPage() {
     const [total, setTotal] = useState(0);
     const [loading, setLoading] = useState(false);
 
-    const fetchPhotos = async () => {
+    const loadPhotos = async () => {
         setLoading(true);
         try {
-            const params = new URLSearchParams();
-            params.set('page', page.toString());
-            if (date) {
-                params.set('date', format(date, 'yyyy-MM-dd'));
-            }
-
-            const res = await fetch(`/api/photos?${params.toString()}`);
-            if (!res.ok) throw new Error('Failed to fetch');
-            const json = (await res.json()) as { data: Photo[], pagination: { total: number } };
-            setPhotos(json.data);
-            setTotal(json.pagination?.total || 0);
+            const dateStr = date ? format(date, 'yyyy-MM-dd') : undefined;
+            const result = await fetchPhotosAction(page, dateStr);
+            setPhotos(result.data);
+            setTotal(result.pagination?.total || 0);
         } catch {
             console.error('Failed to fetch photos');
             toast.error('사진 목록을 불러오지 못했습니다.');
@@ -61,33 +56,18 @@ export default function AdminPage() {
     };
 
     useEffect(() => {
-        fetchPhotos();
+        loadPhotos();
     }, [page, date]);
 
     const handleDelete = async (uid: string) => {
         if (!confirm('정말 삭제하시겠습니까?')) return;
 
         try {
-            const res = await fetch(`/api/photos?uid=${uid}`, {
-                method: 'DELETE',
-                headers: {
-                    // In a real app, you'd handle auth better (e.g. session or prompt for key)
-                    // For MVP, if we running locally or via admin, we might assume auth cookie or similar.
-                    // But requirement said "Auth Key for Upload". Does Admin need auth?
-                    // "업로드는 오직 API를 통해서만 가능하며 API에 접근하기 위해 인증키가 필요함"
-                    // Admin page requirements: "List page... delete button".
-                    // It doesn't explicitly say Admin Page needs Key, but usually yes.
-                    // We will send the key if we have it, or rely on a hardcoded key in query/header for now?
-                    // Or maybe the user enters it in the UI?
-                    // Let's assume for now we use a placeholder or prompt.
-                    'x-api-key': 'test-secret-key-1234' // Hardcoded for demo/MVP locally
-                }
-            });
-
-            if (!res.ok) throw new Error('Delete failed');
+            const success = await deletePhotoAction(uid);
+            if (!success) throw new Error('Delete failed');
 
             toast.success('삭제되었습니다.');
-            fetchPhotos();
+            loadPhotos();
         } catch {
             toast.error('삭제 실패');
         }
@@ -99,6 +79,15 @@ export default function AdminPage() {
                 <CardHeader className="flex flex-row items-center justify-between">
                     <CardTitle>사진 관리자</CardTitle>
                     <div className="flex gap-2">
+                        <Button
+                            variant="outline"
+                            size="icon"
+                            onClick={loadPhotos}
+                            disabled={loading}
+                            title="새로고침"
+                        >
+                            <RefreshCcw className={cn("h-4 w-4", loading && "animate-spin")} />
+                        </Button>
                         <Popover>
                             <PopoverTrigger asChild>
                                 <Button
@@ -138,7 +127,7 @@ export default function AdminPage() {
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                {loading ? (
+                                {loading && photos.length === 0 ? (
                                     <TableRow>
                                         <TableCell colSpan={6} className="h-24 text-center">Loading...</TableCell>
                                     </TableRow>
@@ -150,10 +139,12 @@ export default function AdminPage() {
                                     photos.map((photo) => (
                                         <TableRow key={photo.id}>
                                             <TableCell>
-                                                <img
+                                                <Image
                                                     src={`/api/image/${photo.uid}`}
                                                     alt="thumb"
                                                     className="w-16 h-16 object-cover rounded"
+                                                    width={64}
+                                                    height={64}
                                                     loading='lazy'
                                                 />
                                             </TableCell>
