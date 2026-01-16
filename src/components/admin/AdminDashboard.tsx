@@ -83,7 +83,7 @@ export default function AdminDashboard() {
     return (
         <div className='bg-slate-50 min-h-screen'>
             <div className="p-8 max-w-6xl mx-auto">
-                <Card className='flex flex-col h-[calc(100vh-64px)]'>
+                <Card className='flex flex-col min-h-[calc(100vh-64px)]'>
                     <CardHeader className="flex flex-row items-center justify-between">
                         <CardTitle><p className='text-3xl'>Photo Files Management</p></CardTitle>
                         <div className="flex gap-2">
