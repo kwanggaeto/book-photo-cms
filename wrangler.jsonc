@@ -11,6 +11,10 @@
 		"nodejs_compat",
 		"global_fetch_strictly_public"
 	],
+	"vars": {
+		"ADMIN_ID": "admin",
+		"ALIVE_DAYS": "3"
+	},
 	"assets": {
 		"binding": "ASSETS",
 		"directory": ".open-next/assets"
