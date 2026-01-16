@@ -11,7 +11,7 @@ declare namespace Cloudflare {
         ADMIN_ID: string;
         ADMIN_PW: string;
         ALIVE_DAYS: string;
-        NEXT_PUBLIC_APP_URL: string;
+        BASE_URL: string;
     }
 }
 interface CloudflareEnv extends Cloudflare.Env { }

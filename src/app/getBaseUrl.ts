@@ -6,7 +6,7 @@ export default async function getBaseUrl() {
     const { env } = await getCloudflareContext({ async: true });
 
     const base =
-        env.CF_PREVIEW_DOMAIN ?? "";
+        env.BASE_URL ?? "";
 
     return base;
 }
