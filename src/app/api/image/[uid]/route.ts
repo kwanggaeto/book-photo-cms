@@ -20,8 +20,9 @@ export async function GET(
         }
 
         const headers = new Headers();
-        if (!headers.get("content-type")) {
-            headers.set("content-type", "application/octet-stream");
+        if (!headers.get("content-type")?.startsWith("image/")) {
+            // obj.httpMetadata?.contentType 가 비어있으면 여기서 강제로 넣어줘야 함
+            headers.set("content-type", "image/jpeg"); // 네가 저장한 포맷에 맞게
         }
 
         // ✅ 캐시(원본은 장기 캐시 OK, uid가 불변 key라는 전제)
