@@ -19,12 +19,12 @@ export async function GET(
             return new NextResponse('Image not found or expired', { status: 404 });
         }
 
-        const headers = new Headers();
-        if (!headers.get("content-type")?.startsWith("image/")) {
-            // obj.httpMetadata?.contentType 가 비어있으면 여기서 강제로 넣어줘야 함
-            headers.set("content-type", "image/jpeg"); // 네가 저장한 포맷에 맞게
-        }
+        console.log(object.httpMetadata);
 
+        const headers = new Headers();
+        object.writeHttpMetadata(headers);
+
+        headers.set("content-type", "image/jpeg");
         // ✅ 캐시(원본은 장기 캐시 OK, uid가 불변 key라는 전제)
         headers.set("cache-control", "public, max-age=31536000, immutable");
         headers.set("etag", object.httpEtag);
