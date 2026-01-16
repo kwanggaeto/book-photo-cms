@@ -35,7 +35,7 @@ export default function Home({ searchParams }: PageProps) {
 	}
 	useEffect(() => {
 		loadPhoto();
-	}, [loadPhoto]);
+	}, []);
 
 
 	if (!uid) {
