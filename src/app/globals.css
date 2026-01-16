@@ -149,9 +149,10 @@
   }
 }
 
-@import url('http://fonts.googleapis.com/earlyaccess/nanumgothic.css');
-
 @layer base {
+
+  @import url('http://fonts.googleapis.com/earlyaccess/nanumgothic.css');
+
   * {
     @apply border-border;
   }
