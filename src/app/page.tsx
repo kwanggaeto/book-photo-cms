@@ -40,12 +40,14 @@ export default async function Home({ searchParams }: PageProps) {
 						3일간 유효한 사진입니다.
 					</CardDescription>
 				</CardHeader>
-				<CardContent className="p-0 bg-black flex justify-center items-center min-h-[300px]">
-					{/* eslint-disable-next-line @next/next/no-img-element */}
+				<CardContent className="relative w-full h-[60vh] min-h-[300px] bg-black p-0">
 					<Image
 						src={imageUrl}
 						alt="View"
-						className="max-w-full max-h-[80vh] object-contain"
+						fill
+						className="object-contain"
+						unoptimized
+						priority
 					/>
 				</CardContent>
 				<CardFooter className="flex justify-between p-4 bg-white">
