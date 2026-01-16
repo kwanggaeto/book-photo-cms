@@ -36,10 +36,9 @@ export async function POST(req: NextRequest) {
         const now = new Date();
         const expiresAt = new Date(now.getTime() + 3 * 24 * 60 * 60 * 1000); // 3 days
 
-        // Generate 10-character UID (custom)
+        // Generate 10-character UID
         const uid = generateId(10);
 
-        /*
         const record = await prisma.photo.create({
             data: {
                 uid: uid,
@@ -51,10 +50,8 @@ export async function POST(req: NextRequest) {
         });
 
         const objectKey = `${record.uid}`;
-        console.log('[Upload] DB Record Created:', objectKey);
 
         // 4. Upload to R2
-        console.log('[Upload] Uploading to R2');
         const arrayBuffer = await file.arrayBuffer();
         await env.BUCKET.put(objectKey, arrayBuffer, {
             httpMetadata: {
@@ -65,9 +62,7 @@ export async function POST(req: NextRequest) {
                 uploadedAt: now.toISOString(),
             }
         });
-        */
-        const record = { uid: uid, filename: file.name, mock: true };
-        console.log('[Upload] Success (MOCK)');
+
         return NextResponse.json({
             success: true,
             data: record

@@ -32,7 +32,7 @@ export async function GET(req: NextRequest) {
             }
         }
 
-        const [total, photos] = await Promise.all([
+        /* const [total, photos] = await Promise.all([
             prisma.photo.count({ where }),
             prisma.photo.findMany({
                 where,
@@ -40,7 +40,7 @@ export async function GET(req: NextRequest) {
                 skip,
                 orderBy: { createdAt: 'desc' }
             })
-        ]);
+        ]); */
 
         return NextResponse.json({
             data: photos,
