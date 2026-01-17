@@ -68,7 +68,7 @@ export default function Home({ searchParams }: PageProps) {
 	if (!photo) {
 		return (
 			<div className="flex items-center justify-center min-h-screen bg-slate-50">
-				<Card className="w-[350px] shadow-lg">
+				<Card className="w-[350px] shadow-lg text-center px-5 py-10">
 					<CardHeader>
 						<CardTitle>Photo Not Found</CardTitle>
 						<CardDescription>
@@ -84,14 +84,14 @@ export default function Home({ searchParams }: PageProps) {
 
 	return (
 		<div className="flex flex-col items-center justify-center min-h-screen bg-slate-100 p-4">
-			<Card className="flex flex-col w-full lg:max-w-sm md:max-w-md md:aspect-[3/6] sm:aspect-[2/5] shadow-xl overflow-hidden">
-				<CardHeader className="bg-white">
+			<Card className="flex flex-col w-full lg:max-w-sm md:max-w-md md:aspect-[5/9] sm:aspect-[2/5] shadow-xl overflow-hidden">
+				<CardHeader className="bg-white px-4 pt-4 pb-0">
 					<CardTitle><p className="text-3xl">책박물관 포토부스</p></CardTitle>
 					<CardDescription>
-						expires on {new Date(photo.expiresAt).toLocaleString()}
+						{new Date(photo.expiresAt).toLocaleString()} 만료
 					</CardDescription>
 				</CardHeader>
-				<CardContent className="grow p-0">
+				<CardContent className="grow p-4">
 					<Image
 						className="w-full h-full object-contain"
 						src={imageUrl}
@@ -102,10 +102,12 @@ export default function Home({ searchParams }: PageProps) {
 						priority
 					/>
 				</CardContent>
-				<CardFooter className="flex justify-center p-4 bg-white">
-					<Button className="w-full" variant="default" size="lg">
-						<a href={`/api/image/${uid}`} download={`photo-${uid}.jpg`}>DOWNLOAD</a>
-					</Button>
+				<CardFooter className="flex justify-center px-4 pb-4 pt-0 bg-white">
+					<a href={`/api/image/${uid}`} download={`photo-${uid}.jpg`}>
+						<Button className="w-full" variant="default" size="lg">
+							DOWNLOAD
+						</Button>
+					</a>
 				</CardFooter>
 			</Card>
 		</div>

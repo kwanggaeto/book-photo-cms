@@ -166,7 +166,9 @@ export default function AdminDashboard() {
                                                 </TableCell>
                                                 <TableCell className="font-medium truncate max-w-[200px]">{photo.filename}</TableCell>
                                                 <TableCell className="font-mono text-xs">
-                                                    <a href={`/?uid=${photo.uid}`} target="_blank" rel="noopener noreferrer">{photo.uid}</a>
+                                                    <a href={`/?uid=${photo.uid}`} target="_blank" rel="noopener noreferrer">
+                                                        <Button variant='link'>{photo.uid}</Button>
+                                                    </a>
                                                 </TableCell>
                                                 <TableCell>{new Date(photo.createdAt).toLocaleString()}</TableCell>
                                                 <TableCell className={cn(
