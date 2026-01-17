@@ -12,6 +12,7 @@ interface PageProps {
 }
 
 export default function Home({ searchParams }: PageProps) {
+	const [init, setInit] = useState(false);
 	const [uid, setUid] = useState('');
 	const [photo, setPhoto] = useState<{
 		id: number;
@@ -29,15 +30,16 @@ export default function Home({ searchParams }: PageProps) {
 		setUid(param.uid || '');
 		const photo = await getPhotoByUid(param.uid || '');
 		setPhoto(photo);
+		setInit(true);
 	}
 	useEffect(() => {
 		loadPhoto();
 	}, []);
 
-	if (uid && !photo) {
+	if (!init) {
 		return (
 			<div className="flex items-center justify-center min-h-screen bg-slate-50">
-				<Spinner />
+				<Spinner className="size-10" />
 			</div>
 		);
 	}
