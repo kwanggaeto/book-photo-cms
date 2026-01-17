@@ -78,7 +78,7 @@ export default function Home({ searchParams }: PageProps) {
 		);
 	}
 
-	//const imageUrl = `/api/image/${uid}`;
+	const imageUrl = `/api/image/${uid}`;
 
 	return (
 		<div className="flex flex-col items-center justify-center min-h-screen bg-slate-100 p-4">
@@ -92,7 +92,7 @@ export default function Home({ searchParams }: PageProps) {
 				<CardContent className="grow p-0">
 					<Image
 						className="w-full h-full object-contain"
-						src={uid}
+						src={imageUrl}
 						alt="View"
 						width={400}
 						height={500}

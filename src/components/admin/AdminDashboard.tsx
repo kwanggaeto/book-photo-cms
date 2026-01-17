@@ -156,7 +156,7 @@ export default function AdminDashboard() {
                                             <TableRow key={photo.id}>
                                                 <TableCell>
                                                     <Image
-                                                        src={photo.uid}
+                                                        src={`/api/image/${photo.uid}`}
                                                         alt="thumb"
                                                         className="w-16 h-16 object-cover rounded"
                                                         width={64}
