@@ -98,6 +98,7 @@ export default function Home({ searchParams }: PageProps) {
 						height={500}
 						objectFit="contain"
 						priority
+						unoptimized
 					/>
 				</CardContent>
 				<CardFooter className="flex justify-center p-4 bg-white">

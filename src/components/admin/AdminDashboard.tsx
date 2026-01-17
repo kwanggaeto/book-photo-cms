@@ -162,6 +162,7 @@ export default function AdminDashboard() {
                                                         width={64}
                                                         height={64}
                                                         loading='lazy'
+                                                        unoptimized
                                                     />
                                                 </TableCell>
                                                 <TableCell className="font-medium truncate max-w-[200px]">{photo.filename}</TableCell>
