@@ -7,7 +7,8 @@ const nextConfig: NextConfig = {
 			{ pathname: "/api/image/**" }],
 		remotePatterns: [
 			{ protocol: "http", hostname: "localhost" },
-			{ protocol: "https", hostname: "book-photo-cms.eternalism.workers.dev" }
+			{ protocol: "https", hostname: "book-photo-cms.eternalism.workers.dev" },
+			{ protocol: "https", hostname: "book-photo.wonderbinary.com" }
 		]
 	}
 };

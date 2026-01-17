@@ -52,36 +52,12 @@ export async function POST(req: NextRequest) {
         const objectKey = `${newPhoto[0].uid}`;
 
         // 5. Upload to R2
-        const arrayBuffer = await file.arrayBuffer();
-
-        await env.BUCKET.put(objectKey, arrayBuffer, {
+        await env.BUCKET.put(objectKey, file, {
             httpMetadata: {
                 contentType: file.type,
             },
             customMetadata: {
                 originalName: file.name,
-                uploadedAt: now.toISOString(),
-            }
-        });
-
-        const thumb = await env.IMAGES.input(file.stream()).transform({ width: 64, fit: 'contain' }).output({ anim: false, quality: 50, format: 'image/jpeg' });
-        await env.BUCKET.put(`${objectKey}_thumb`, thumb.image(), {
-            httpMetadata: {
-                contentType: 'image/jpeg',
-            },
-            customMetadata: {
-                originalName: `thumb_${file.name}`,
-                uploadedAt: now.toISOString(),
-            }
-        });
-
-        const mid = await env.IMAGES.input(file.stream()).transform({ width: 512, fit: 'contain' }).output({ anim: false, quality: 75, format: 'image/jpeg' });
-        await env.BUCKET.put(`${objectKey}_mid`, mid.image(), {
-            httpMetadata: {
-                contentType: 'image/jpeg',
-            },
-            customMetadata: {
-                originalName: `mid_${file.name}`,
                 uploadedAt: now.toISOString(),
             }
         });

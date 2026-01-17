@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import Image from 'next/image'
 import { getPhotoByUid } from '@/services/photo';
 import { useEffect, useState } from "react";
+import { Spinner } from "@/components/ui/spinner";
 
 interface PageProps {
 	searchParams: Promise<{ uid?: string }>;
@@ -32,6 +33,14 @@ export default function Home({ searchParams }: PageProps) {
 	useEffect(() => {
 		loadPhoto();
 	}, []);
+
+	if (uid && !photo) {
+		return (
+			<div className="flex items-center justify-center min-h-screen bg-slate-50">
+				<Spinner />
+			</div>
+		);
+	}
 
 
 	if (!uid) {
@@ -69,7 +78,7 @@ export default function Home({ searchParams }: PageProps) {
 		);
 	}
 
-	const imageUrl = `/api/image/${uid}_mid`;
+	const imageUrl = `/api/image/${uid}`;
 
 	return (
 		<div className="flex flex-col items-center justify-center min-h-screen bg-slate-100 p-4">
@@ -82,19 +91,18 @@ export default function Home({ searchParams }: PageProps) {
 				</CardHeader>
 				<CardContent className="grow p-0">
 					<Image
-						className="w-full h-full"
+						className="w-full h-full object-contain"
 						src={imageUrl}
 						alt="View"
 						width={400}
 						height={500}
 						objectFit="contain"
 						priority
-						unoptimized
 					/>
 				</CardContent>
 				<CardFooter className="flex justify-center p-4 bg-white">
 					<Button className="w-full" variant="default" size="lg">
-						<a href={imageUrl} download={`photo-${uid}.jpg`}>DOWNLOAD</a>
+						<a href={`/api/image/${uid}`} download={`photo-${uid}.jpg`}>DOWNLOAD</a>
 					</Button>
 				</CardFooter>
 			</Card>

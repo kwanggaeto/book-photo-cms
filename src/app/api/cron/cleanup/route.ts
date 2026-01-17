@@ -40,8 +40,6 @@ export async function GET(req: Request) {
             try {
                 // Delete from R2
                 await env.BUCKET.delete(photo.uid);
-                await env.BUCKET.delete(`${photo.uid}_thumb`);
-                await env.BUCKET.delete(`${photo.uid}_mid`);
 
                 // Delete from D1
                 await db.delete(photos).where(eq(photos.id, photo.id));
