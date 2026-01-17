@@ -25,6 +25,7 @@ export async function GET(
         headers.set("content-type", "image/jpeg");
         // ✅ 캐시(원본은 장기 캐시 OK, uid가 불변 key라는 전제)
         headers.set("cache-control", "public, max-age=31536000, immutable");
+        headers.set("cdn-cache-control", "public, max-age=31536000, immutable");
         headers.set("etag", object.httpEtag);
 
         // Stream the body
