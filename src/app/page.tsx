@@ -103,7 +103,7 @@ export default function Home({ searchParams }: PageProps) {
 					/>
 				</CardContent>
 				<CardFooter className="flex justify-center px-4 pb-4 pt-0 bg-white">
-					<a href={`/api/image/${uid}`} download={`photo-${uid}.jpg`}>
+					<a className="w-full" href={`/api/image/${uid}`} download={`photo-${uid}.jpg`}>
 						<Button className="w-full" variant="default" size="lg">
 							DOWNLOAD
 						</Button>
