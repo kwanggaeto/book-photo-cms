@@ -22,5 +22,5 @@ export default function cloudflareLoader({ src, width, quality }: ImageLoaderPro
     const cleanSrc = src.startsWith('/') ? src.slice(1) : src;
 
     // Cloudflare Resizing URL 반환
-    return `/cdn-cgi/image/${paramsString}/${process.env.BASE_URL}/${cleanSrc}`;
+    return `/cdn-cgi/image/${paramsString}/${cleanSrc}`;
 }
