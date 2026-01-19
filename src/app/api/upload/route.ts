@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getDb } from '@/lib/db';
 import { photos } from '@/db/schema';
 import { getCloudflareContext } from '@opennextjs/cloudflare';
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 
 function generateId(length: number = 10) {
@@ -11,7 +13,7 @@ function generateId(length: number = 10) {
     return Array.from(values).map((v) => chars[v % chars.length]).join('');
 }
 
-export async function PUT(req: NextRequest) {
+export async function GET(req: NextRequest) {
     try {
         // 1. Auth Check
         const apiKey = req.headers.get('x-api-key');
@@ -19,7 +21,16 @@ export async function PUT(req: NextRequest) {
         const contentLength = req.headers.get('content-length') ?? '0';
         const filename = req.headers.get('filename') ?? `${Date.now()}.png`;
         const ctx = await getCloudflareContext();
-        const env = ctx.env as { API_KEY: string; BUCKET: R2Bucket; DB: D1Database, IMAGES: ImagesBinding, ALIVE_DAYS: string };
+        const env = ctx.env as {
+            API_KEY: string;
+            BUCKET: R2Bucket;
+            DB: D1Database,
+            IMAGES: ImagesBinding,
+            ALIVE_DAYS: string,
+            R2_ACCESS_KEY_ID: string,
+            R2_SECRET_ACCESS_KEY: string,
+            R2_BUCKET_NAME: string,
+        };
 
         if (apiKey !== env.API_KEY) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -43,23 +54,34 @@ export async function PUT(req: NextRequest) {
             expiresAt: expiresAt,
             // createdAt is default now()`
         }).returning();
-
+        ``
         const objectKey = `${newPhoto[0].uid}`;
-
-        // 5. Upload to R2
-        await env.BUCKET.put(objectKey, req.body, {
-            httpMetadata: {
-                contentType: contentType,
+        const s3 = new S3Client({
+            region: "auto", // R2 S3 API region은 auto :contentReference[oaicite:3]{index=3}
+            endpoint: `https://${env.R2_ACCESS_KEY_ID}.r2.cloudflarestorage.com`,
+            credentials: {
+                accessKeyId: env.R2_ACCESS_KEY_ID,
+                secretAccessKey: env.R2_SECRET_ACCESS_KEY,
             },
-            customMetadata: {
-                originalName: uid,
-                uploadedAt: now.toISOString(),
-            }
         });
+
+        // presigned PUT URL 생성
+        const expiresIn = 60; // 초: 1분 (원하면 늘려)
+        const cmd = new PutObjectCommand({
+            Bucket: env.R2_BUCKET_NAME,
+            Key: objectKey,
+            ContentType: contentType, // ⭐ PUT 요청에도 동일하게 넣어야 서명 검증 통과하기 쉬움
+            // (선택) Metadata: { uid }
+        });
+
+        const uploadUrl = await getSignedUrl(s3, cmd, { expiresIn });
 
         return NextResponse.json({
             success: true,
-            data: newPhoto[0]
+            data: {
+                uploadUrl: uploadUrl,
+                photo: newPhoto[0]
+            }
         });
 
     } catch (error) {
