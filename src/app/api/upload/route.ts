@@ -11,23 +11,18 @@ function generateId(length: number = 10) {
     return Array.from(values).map((v) => chars[v % chars.length]).join('');
 }
 
-export async function POST(req: NextRequest) {
+export async function PUT(req: NextRequest) {
     try {
         // 1. Auth Check
         const apiKey = req.headers.get('x-api-key');
+        const contentType = req.headers.get('content-type') ?? 'image/png';
+        const contentLength = req.headers.get('content-length') ?? '0';
+        const filename = req.headers.get('filename') ?? `${Date.now()}.png`;
         const ctx = await getCloudflareContext();
         const env = ctx.env as { API_KEY: string; BUCKET: R2Bucket; DB: D1Database, IMAGES: ImagesBinding, ALIVE_DAYS: string };
 
         if (apiKey !== env.API_KEY) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-        }
-
-        // 2. Parse Multipart
-        const formData = await req.formData();
-        const file = formData.get('file') as File;
-
-        if (!file) {
-            return NextResponse.json({ error: 'No file uploaded' }, { status: 400 });
         }
 
         // 3. Prepare Metadata
@@ -42,9 +37,9 @@ export async function POST(req: NextRequest) {
         // 4. Save to D1 via Drizzle
         const newPhoto = await db.insert(photos).values({
             uid: uid,
-            filename: file.name,
-            size: file.size,
-            mimeType: file.type,
+            filename: filename,
+            size: parseInt(contentLength),
+            mimeType: contentType,
             expiresAt: expiresAt,
             // createdAt is default now()`
         }).returning();
@@ -52,12 +47,12 @@ export async function POST(req: NextRequest) {
         const objectKey = `${newPhoto[0].uid}`;
 
         // 5. Upload to R2
-        await env.BUCKET.put(objectKey, file, {
+        await env.BUCKET.put(objectKey, req.body, {
             httpMetadata: {
-                contentType: file.type,
+                contentType: contentType,
             },
             customMetadata: {
-                originalName: file.name,
+                originalName: uid,
                 uploadedAt: now.toISOString(),
             }
         });
