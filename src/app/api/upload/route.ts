@@ -54,7 +54,7 @@ export async function GET(req: NextRequest) {
             expiresAt: expiresAt,
             // createdAt is default now()`
         }).returning();
-        ``
+
         const objectKey = `${newPhoto[0].uid}`;
         const s3 = new S3Client({
             region: "auto", // R2 S3 API region은 auto :contentReference[oaicite:3]{index=3}
