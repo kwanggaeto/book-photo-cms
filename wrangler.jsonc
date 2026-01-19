@@ -15,6 +15,7 @@
 		"ADMIN_ID": "admin",
 		"ALIVE_DAYS": "3",
 		"API_KEY": "[ENCRYPTION_KEY]",
+		"R2_ACCOUNT_ID": "[ENCRYPTION_KEY]",
 		"R2_ACCESS_KEY_ID": "d88323a01f5ce67d7decbd741e306e23",
 		"R2_SECRET_ACCESS_KEY": "[ENCRYPTION_KEY]",
 		"R2_BUCKET_NAME": "book-photo-storage"
