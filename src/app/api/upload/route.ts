@@ -94,34 +94,39 @@ export async function GET(req: NextRequest) {
 
 
 export async function POST(req: NextRequest) {
+    try {
 
-    // 1. Auth Check
-    const apiKey = req.headers.get('x-api-key');
-    const ctx = await getCloudflareContext();
-    const env = ctx.env as {
-        API_KEY: string;
-        DB: D1Database,
-    };
+        // 1. Auth Check
+        const apiKey = req.headers.get('x-api-key');
+        const ctx = await getCloudflareContext();
+        const env = ctx.env as {
+            API_KEY: string;
+            DB: D1Database,
+        };
 
-    if (apiKey !== env.API_KEY) {
-        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        if (apiKey !== env.API_KEY) {
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        }
+
+        const formData = await req.formData();
+        const uid = formData.get('uid') as string;
+        const uploaded = formData.get('uploaded') as string;
+        const uploadedValue = uploaded ? Boolean(uploaded) : false;
+
+        const db = await getDb();
+        const photo = await db.select().from(photos).where(eq(photos.uid, uid));
+
+        if (!photo) {
+            return NextResponse.json({ error: 'Photo not found' }, { status: 404 });
+        }
+
+        if (!uploadedValue) {
+            await db.delete(photos).where(eq(photos.uid, uid));
+        }
+
+        return NextResponse.json({ success: true }, { status: 200 });
+    } catch (error) {
+        console.error('Upload Error:', error);
+        return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
     }
-
-    const formData = await req.formData();
-    const uid = formData.get('uid') as string;
-    const uploaded = formData.get('uploaded') as string;
-    const uploadedValue = uploaded ? Boolean(uploaded) : false;
-
-    const db = await getDb();
-    const photo = await db.select().from(photos).where(eq(photos.uid, uid));
-
-    if (!photo) {
-        return NextResponse.json({ error: 'Photo not found' }, { status: 404 });
-    }
-
-    if (!uploadedValue) {
-        await db.delete(photos).where(eq(photos.uid, uid));
-    }
-
-    return NextResponse.json({ success: true, data: photo });
 }
