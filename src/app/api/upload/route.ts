@@ -111,6 +111,7 @@ export async function POST(req: NextRequest) {
         const formData = await req.formData();
         const uid = formData.get('uid') as string;
         const uploaded = formData.get('uploaded') as string;
+        const length = formData.get('Content-Length') as string || "0";
         const uploadedValue = uploaded ? Boolean(uploaded) : false;
 
         const db = await getDb();
@@ -123,6 +124,8 @@ export async function POST(req: NextRequest) {
         if (!uploadedValue) {
             await db.delete(photos).where(eq(photos.uid, uid));
         }
+
+        await db.update(photos).set({ size: parseInt(length) }).where(eq(photos.uid, uid));
 
         return NextResponse.json({ success: true }, { status: 200 });
     } catch (error) {
