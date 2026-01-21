@@ -14,7 +14,7 @@
 	"vars": {
 		"ADMIN_ID": "admin",
 		"ALIVE_DAYS": "3",
-		"R2_ACCESS_KEY_ID": "d88323a01f5ce67d7decbd741e306e23",
+		"R2_ACCOUNT_ID": "d88323a01f5ce67d7decbd741e306e23",
 		"R2_BUCKET_NAME": "book-photo-storage"
 	},
 	"assets": {
