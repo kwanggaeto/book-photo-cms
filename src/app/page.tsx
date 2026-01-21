@@ -86,7 +86,7 @@ export default function Home({ searchParams }: PageProps) {
 		<div className="flex flex-col items-center justify-center min-h-screen bg-slate-100 p-4">
 			<Card className="flex flex-col w-full lg:max-w-sm md:max-w-md md:aspect-[5/9] sm:aspect-[2/5] shadow-xl overflow-hidden">
 				<CardHeader className="bg-white px-4 pt-4 pb-0">
-					<CardTitle><p className="text-3xl">송파책박물관</p></CardTitle>
+					<CardTitle><p className="text-3xl">송파책박물관 포토부스</p></CardTitle>
 					<CardDescription>
 						{new Date(photo.expiresAt).toLocaleString()} 만료
 					</CardDescription>
